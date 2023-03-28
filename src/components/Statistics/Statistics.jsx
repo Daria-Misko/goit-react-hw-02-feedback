@@ -1,5 +1,6 @@
 import React from 'react';
 import { FeedBack } from './Statistics.styled';
+import PropTypes from 'prop-types';
 
 export default function Statistics({
   good,
@@ -7,11 +8,9 @@ export default function Statistics({
   neutral,
   positivePercentage,
   total,
-  title,
 }) {
   return (
     <section>
-      <h2>{title}</h2>
       <div>
         <FeedBack>Good: {good}</FeedBack>
         <FeedBack>Neutral: {neutral}</FeedBack>
@@ -22,3 +21,11 @@ export default function Statistics({
     </section>
   );
 }
+
+Statistics.propTypes = {
+  good: PropTypes.number.isRequired,
+  bad: PropTypes.number.isRequired,
+  neutral: PropTypes.number.isRequired,
+  positivePercentage: PropTypes.number.isRequired,
+  total: PropTypes.number.isRequired,
+};

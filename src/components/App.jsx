@@ -12,7 +12,6 @@ export class App extends Component {
     bad: 0,
   };
 
-  // чому треба записувати саме так = () => ????
   handleFeedback = option => {
     this.setState(prevState => {
       return { [option]: prevState[option] + 1 };
@@ -20,38 +19,38 @@ export class App extends Component {
   };
 
   countTotalFeedback = () => {
-    return this.state.good + this.state.bad + this.state.neutral;
+    const { good, neutral, bad } = this.state;
+    return good + bad + neutral;
   };
 
   countPositiveFeedbackPercentage = () => {
-    return Math.floor(
-      (this.state.good * 100) /
-        (this.state.good + this.state.bad + this.state.neutral)
-    );
-    // const total = (this.state.good + this.state.bad + this.state.neutral);
+    const { good } = this.state;
+    return Math.round((good * 100) / this.countTotalFeedback());
   };
 
   render() {
+    const { good, neutral, bad } = this.state;
+    const {
+      handleFeedback,
+      countTotalFeedback,
+      countPositiveFeedbackPercentage,
+    } = this;
     return (
       <Container>
         <Section title={'Please leave feedback'}>
           <FeedbackOptions
-            options={['good', 'neutral', 'bad']}
-            onLeaveFeedback={this.handleFeedback}
+            options={Object.keys(this.state)}
+            onLeaveFeedback={handleFeedback}
           />
         </Section>
         <Section title={'Statistics'}>
-          {this.countTotalFeedback() ? (
+          {countTotalFeedback() ? (
             <Statistics
-              good={this.state.good}
-              neutral={this.state.neutral}
-              bad={this.state.bad}
-              total={this.countTotalFeedback()}
-              positivePercentage={
-                this.countPositiveFeedbackPercentage()
-                  ? this.countPositiveFeedbackPercentage()
-                  : 0
-              }
+              good={good}
+              neutral={neutral}
+              bad={bad}
+              total={countTotalFeedback()}
+              positivePercentage={countPositiveFeedbackPercentage()}
             />
           ) : (
             <Notification message="There is no feedback" />
